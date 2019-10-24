@@ -20,6 +20,7 @@ mongoose
   });
 
 const authRouter = require('./routes/auth');
+const catalogRouter = require('./routes/catalog');
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', authRouter);
+app.use('/catalog', catalogRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
