@@ -4,7 +4,7 @@ const Doll = require('../models/Doll');
 const router = express.Router();
 // const { checkIfLoggedIn } = require('../middlewares');
 
-/* GET dolls listing. */
+// GET all dolls listing
 router.get('/', async (req, res, next) => {
   try {
     const dolls = await Doll.find();
@@ -14,7 +14,34 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:dollId', async (req, res, next) => {
+
+// GET Subbrand dolls listing
+router.get('/:brand', async (req, res, next) => {
+    const { brand } = req.params;
+    console.log(brand)
+    let subBrand;
+
+    if ( brand === "fashionroyalty") {
+        subBrand = "Fashion Royalty";
+    } else if ( brand === "nuface" ) {
+        subBrand = "Nu Face";
+    } else {
+        subBrand = "Poppy Parker";
+    }      
+
+    try {
+    //   const dolls = await Doll.find();
+      const dolls = await Doll.find({ subBrand });
+      console.log(dolls);
+      res.json(dolls);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+
+
+router.get('/:brand/:dollId', async (req, res, next) => {
   const { dollId } = req.params;
   try {
     const doll = await Doll.findById(dollId);
