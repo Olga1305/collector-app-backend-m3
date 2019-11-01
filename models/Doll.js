@@ -17,6 +17,7 @@ const dollSchema = new Schema(
     image3: { type: String },
     image4: { type: String },
     accessoriesImage: { type: String },
+    images: [{ type: String }],
     collectionName: { type: String },
     type: { type: String },
     distributedBy: { type: String },
