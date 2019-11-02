@@ -3,8 +3,6 @@ const Doll = require('../models/Doll');
 
 const router = express.Router();
 
-// const { checkIfLoggedIn } = require('../middlewares');
-
 // GET all dolls listing
 router.get('/', async (req, res, next) => {
   try {
