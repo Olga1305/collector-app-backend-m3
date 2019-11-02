@@ -29,4 +29,15 @@ router.get('/mycollection', checkIfLoggedIn, async (req, res, next) => {
   }
 });
 
+// GET show user's wishlist
+router.get('/mywishlist', checkIfLoggedIn, async (req, res, next) => {
+    const { _id } = req.session.currentUser;
+    try {
+      const user = await User.findById({ _id });
+      res.json(user.myWishlist);
+    } catch (error) {
+      next(error);
+    }
+  });
+
 module.exports = router;
