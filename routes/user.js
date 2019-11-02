@@ -69,4 +69,19 @@ router.post('/catalog/:brand/:dollId', checkIfLoggedIn, async (req, res, next) =
   }
 });
 
+// POST add a doll to user's wishlist
+router.post('/catalog/:brand/:dollId', checkIfLoggedIn, async (req, res, next) => {
+  const { dollId } = req.params;
+  const { _id } = req.session.currentUser; 
+  try {
+    const owner = _id;
+    const doll = dollId;
+    const myDoll = await MyDoll.create({ owner, doll });
+    const user = await User.findByIdAndUpdate(_id, { $push: { myWishlist: [myDoll.id] } }, { new: true });
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
