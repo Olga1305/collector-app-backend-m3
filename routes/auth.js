@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 
-const { checkUsernameAndPasswordNotEmpty } = require('../middlewares');
+const { checkEmailAndPasswordNotEmpty } = require('../middlewares');
 
 const User = require('../models/User');
 
@@ -17,10 +17,10 @@ router.get('/me', (req, res, next) => {
   }
 });
 
-router.post('/signup', checkUsernameAndPasswordNotEmpty, async (req, res, next) => {
-  const { username, password } = res.locals.auth;
+router.post('/signup', checkEmailAndPasswordNotEmpty, async (req, res, next) => {
+  const { email, password } = res.locals.auth;
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (user) {
       return res.status(422).json({ code: 'username-not-unique' });
     }
@@ -28,7 +28,7 @@ router.post('/signup', checkUsernameAndPasswordNotEmpty, async (req, res, next) 
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashedPassword = bcrypt.hashSync(password, salt);
 
-    const newUser = await User.create({ username, hashedPassword });
+    const newUser = await User.create({ email, hashedPassword });
     req.session.currentUser = newUser;
     return res.json(newUser);
   } catch (error) {
@@ -36,10 +36,10 @@ router.post('/signup', checkUsernameAndPasswordNotEmpty, async (req, res, next) 
   }
 });
 
-router.post('/login', checkUsernameAndPasswordNotEmpty, async (req, res, next) => {
-  const { username, password } = res.locals.auth;
+router.post('/login', checkEmailAndPasswordNotEmpty, async (req, res, next) => {
+  const { email, password } = res.locals.auth;
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ code: 'not-found' });
     }

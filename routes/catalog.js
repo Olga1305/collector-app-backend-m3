@@ -36,7 +36,7 @@ router.get('/:brand', async (req, res, next) => {
     const collections = [];
 
     dolls.forEach((doll) => {
-      if (doll.year !== "") {
+      if (doll.year !== '') {
         allYears.push(doll.year);
       } else {
         return allYears;
