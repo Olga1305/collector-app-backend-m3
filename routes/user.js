@@ -5,7 +5,7 @@ const MyDoll = require('../models/MyDoll');
 
 const router = express.Router();
 
-const { checkIfLoggedIn } = require('../middlewares');
+const { checkIfLoggedIn, findUserDolls } = require('../middlewares');
 
 // GET show user's profile
 // router.get('/profile', checkIfLoggedIn, async (req, res, next) => {
@@ -20,24 +20,32 @@ const { checkIfLoggedIn } = require('../middlewares');
 
 
 // GET show user's collection
-router.get('/mycollection', checkIfLoggedIn, async (req, res, next) => {
+router.get('/mycollection', async (req, res, next) => {
   const { _id } = req.session.currentUser;
-  // const dolls = []; 
+  
   try {
     const user = await User.findById({ _id });  
-   
-    // try {    
+    // console.log(user.myCollection)
+    // const dolls = []; 
+    // user.myCollection.forEach(async (el) => {
+    //   const doll = await MyDoll.findById(el).populate('doll');    
+    //   dolls.push(doll);
+    //   console.log(dolls)
+    //   return dolls;   
+    // })
+
+    const myCollection = await findUserDolls(user.myCollection); 
+      // console.log(myCollection)
        
-    //   user.myCollection.forEach(async (el) => {
-    //     const doll = await MyDoll.findById(el).populate('doll');      
-    //     return dolls.push(doll);
-    //   })      
-      
-      
-    // } catch (error) {
-    //   next(error);
-    // }    
+   
+    
+    // const myCollection = dolls;
+     
     res.json(user.myCollection);
+      
+    
+    
+    
   } catch (error) {
     next(error);
   }
