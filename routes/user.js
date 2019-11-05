@@ -24,25 +24,14 @@ router.get('/mycollection', async (req, res, next) => {
   const { _id } = req.session.currentUser;
   
   try {
-    const user = await User.findById({ _id });  
-    // console.log(user.myCollection)
-    // const dolls = []; 
-    // user.myCollection.forEach(async (el) => {
-    //   const doll = await MyDoll.findById(el).populate('doll');    
-    //   dolls.push(doll);
-    //   console.log(dolls)
-    //   return dolls;   
-    // })
-
-    const myCollection = await findUserDolls(user.myCollection); 
-      // console.log(myCollection)
-       
-   
-    
-    // const myCollection = dolls;
+    const user = await User.findById({ _id })
+    // .populate({
+    //   path: 'myCollection',
+    //   populate: 'doll'
+    // });  
+    console.log(user.myCollection)
      
-    res.json(user.myCollection);
-      
+    res.json(user.myCollection);    
     
     
     

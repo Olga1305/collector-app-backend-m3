@@ -23,32 +23,8 @@ const checkEmailAndPasswordNotEmpty = (req, res, next) => {
   }
 };
 
-const findUserDolls = async (arr) => {
-  try {
-    const dolls = await arr.map(async (el) => {
-      try {
-        const doll = await MyDoll.findById(el).populate('doll');
-        // console.log(doll);
-        return doll;
-      } catch (error) {
-          return console.log(error);
-        }    
-    });
-    
-    const myDolls = await dolls;
-    console.log(myDolls);
-    return myDolls;
-
-  } catch (error) {
-    return console.log(error);
-  }
-  
-  
-  
-};
 
 module.exports = {
   checkIfLoggedIn,
-  checkEmailAndPasswordNotEmpty,
-  findUserDolls
+  checkEmailAndPasswordNotEmpty
 };

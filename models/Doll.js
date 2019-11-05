@@ -24,6 +24,7 @@ const dollSchema = new Schema(
     year: { type: Number },
     editionSize: { type: Number },
     releasePrice: { type: Number },
+    ebayQueries: [{ type: String }],
   },
   {
     timestamps: {

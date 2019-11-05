@@ -132,6 +132,23 @@ router.get('/:brand/:dollId', async (req, res, next) => {
         doll.images.push(doll.accessoriesImage);
       }
 
+      doll.ebayQueries = [];
+
+      // const subBrand = doll.subBrand.toLowerCase().replace(' ', '%20');
+      // const character = doll.character.toLowerCase().replace(' ', '%20');
+      // const name = doll.name.toLowerCase().replace(' ', '%20');
+      
+      const baseQuery = (doll.subBrand + ' ' + doll.character + ' ' + doll.name).toLowerCase();
+      const nrfb = baseQuery + ' nrfb';
+      const nude = baseQuery + ' doll nude';
+      const head = baseQuery + ' doll head';
+      const outfit = baseQuery + ' outfit';
+
+      // const subBrand = encodeURI(doll.subBrand);
+
+      doll.ebayQueries.push(baseQuery, nrfb, nude, head, outfit);
+      console.log(doll.ebayQueries);
+
       res.json(doll);
     } else {
       res.json({});
