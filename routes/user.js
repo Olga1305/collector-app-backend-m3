@@ -6,7 +6,7 @@ const MyDoll = require('../models/MyDoll');
 const router = express.Router();
 
 const { checkIfLoggedIn } = require('../middlewares');
-const { findUserDolls, checkIfDollInTheList } = require('../middlewares/helpers');
+const { findUserDolls, checkIfDollInTheList, getDollPhotos, getEbayQueries } = require('../middlewares/helpers');
 
 // GET show user's profile
 // router.get('/profile', checkIfLoggedIn, async (req, res, next) => {
@@ -20,21 +20,6 @@ const { findUserDolls, checkIfDollInTheList } = require('../middlewares/helpers'
 // });
 
 
-// // GET show user's collection
-// router.get('/mycollection', checkIfLoggedIn, async (req, res, next) => {
-//   const { _id } = req.session.currentUser;  
-//   try {    
-//     const user = await User.findById({ _id })
-//     .populate({
-//       path: 'myCollection',
-//       populate: { path: "doll"},
-//     });  
-//     res.json(user.myCollection);  
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
 // GET show user's collection
 router.get('/mycollection', checkIfLoggedIn, async (req, res, next) => {
   const { _id } = req.session.currentUser;
@@ -47,6 +32,25 @@ router.get('/mycollection', checkIfLoggedIn, async (req, res, next) => {
   }
 });
 
+// GET show a single doll from user's collection
+router.get('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
+  const { dollId } = req.params;  
+  try {
+    const myDoll = await MyDoll.findById(dollId).populate('doll');
+    
+    if (myDoll) {
+
+      getDollPhotos(myDoll.doll);
+      getEbayQueries(myDoll.doll);
+
+      res.json(myDoll);
+    } else {
+      res.json({}); 
+    } 
+  } catch (error) {
+    next(error);
+  }
+});
 
 // GET show user's wishlist
 router.get('/mywishlist', checkIfLoggedIn, async (req, res, next) => {

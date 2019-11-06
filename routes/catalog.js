@@ -3,6 +3,8 @@ const Doll = require('../models/Doll');
 
 const router = express.Router();
 
+const { getDollPhotos, getEbayQueries } = require('../middlewares/helpers');
+
 // GET all dolls listing
 router.get('/', async (req, res, next) => {
   try {
@@ -111,44 +113,10 @@ router.get('/:brand/:dollId', async (req, res, next) => {
     const doll = await Doll.findById(dollId);
 
     if (doll) {
-      doll.images = [];
 
-      if (doll.closeUpImage) {
-        doll.images.push(doll.closeUpImage);
-      }
-      if (doll.image1) {
-        doll.images.push(doll.image1);
-      }
-      if (doll.image2) {
-        doll.images.push(doll.image2);
-      }
-      if (doll.image3) {
-        doll.images.push(doll.image3);
-      }
-      if (doll.image4) {
-        doll.images.push(doll.image4);
-      }
-      if (doll.accessoriesImage) {
-        doll.images.push(doll.accessoriesImage);
-      }
-
-      doll.ebayQueries = [];
-
-      // const subBrand = doll.subBrand.toLowerCase().replace(' ', '%20');
-      // const character = doll.character.toLowerCase().replace(' ', '%20');
-      // const name = doll.name.toLowerCase().replace(' ', '%20');
+      getDollPhotos(doll);
+      getEbayQueries(doll);
       
-      const baseQuery = (doll.subBrand + ' ' + doll.character + ' ' + doll.name).toLowerCase();
-      const nrfb = baseQuery + ' nrfb';
-      const nude = baseQuery + ' doll nude';
-      const head = baseQuery + ' doll head';
-      const outfit = baseQuery + ' outfit';
-
-      // const subBrand = encodeURI(doll.subBrand);
-
-      doll.ebayQueries.push(baseQuery, nrfb, nude, head, outfit);
-      console.log(doll.ebayQueries);
-
       res.json(doll);
     } else {
       res.json({});
