@@ -5,7 +5,8 @@ const MyDoll = require('../models/MyDoll');
 
 const router = express.Router();
 
-const { checkIfLoggedIn, findUserDolls } = require('../middlewares');
+const { checkIfLoggedIn } = require('../middlewares');
+const { findUserDolls, checkIfDollInTheList } = require('../middlewares/helpers');
 
 // GET show user's profile
 // router.get('/profile', checkIfLoggedIn, async (req, res, next) => {
@@ -19,32 +20,40 @@ const { checkIfLoggedIn, findUserDolls } = require('../middlewares');
 // });
 
 
+// // GET show user's collection
+// router.get('/mycollection', checkIfLoggedIn, async (req, res, next) => {
+//   const { _id } = req.session.currentUser;  
+//   try {    
+//     const user = await User.findById({ _id })
+//     .populate({
+//       path: 'myCollection',
+//       populate: { path: "doll"},
+//     });  
+//     res.json(user.myCollection);  
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
 // GET show user's collection
-router.get('/mycollection', async (req, res, next) => {
+router.get('/mycollection', checkIfLoggedIn, async (req, res, next) => {
   const { _id } = req.session.currentUser;
-  
+  const list = 'myCollection';
   try {
-    const user = await User.findById({ _id })
-    // .populate({
-    //   path: 'myCollection',
-    //   populate: 'doll'
-    // });  
-    console.log(user.myCollection)
-     
-    res.json(user.myCollection);    
-    
-    
-    
+    const user = await findUserDolls(_id, list);
+    res.json(user.myCollection);  
   } catch (error) {
     next(error);
   }
 });
 
+
 // GET show user's wishlist
 router.get('/mywishlist', checkIfLoggedIn, async (req, res, next) => {
   const { _id } = req.session.currentUser;
+  const list = 'myWishlist';
   try {
-    const user = await User.findById({ _id });
+    const user = await findUserDolls(_id, list);
     res.json(user.myWishlist);
   } catch (error) {
     next(error);
@@ -55,12 +64,17 @@ router.get('/mywishlist', checkIfLoggedIn, async (req, res, next) => {
 router.post('/catalog/:brand/:dollId', checkIfLoggedIn, async (req, res, next) => {
   const { dollId } = req.params;
   const { _id } = req.session.currentUser; 
+  const list = 'myCollection';
   try {
-    const owner = _id;
-    const doll = dollId;
-    const myDoll = await MyDoll.create({ owner, doll });
-    const user = await User.findByIdAndUpdate(_id, { $push: { myCollection: [myDoll.id] } }, { new: true });
-    res.json(user);
+    const user = await findUserDolls(_id, list);
+    const result = await checkIfDollInTheList(user.myCollection, dollId);
+    if (!result) {
+      const owner = _id;
+      const doll = dollId;
+      const myDoll = await MyDoll.create({ owner, doll });
+      const user = await User.findByIdAndUpdate(_id, { $push: { myCollection: [myDoll.id] } }, { new: true });
+      res.json(user);
+    }    
   } catch (error) {
     next(error);
   }
@@ -70,12 +84,17 @@ router.post('/catalog/:brand/:dollId', checkIfLoggedIn, async (req, res, next) =
 router.post('/catalog/:brand/:dollId', checkIfLoggedIn, async (req, res, next) => {
   const { dollId } = req.params;
   const { _id } = req.session.currentUser; 
+  const list = 'myWishlist';
   try {
-    const owner = _id;
-    const doll = dollId;
-    const myDoll = await MyDoll.create({ owner, doll });
-    const user = await User.findByIdAndUpdate(_id, { $push: { myWishlist: [myDoll.id] } }, { new: true });
-    res.json(user);
+    const user = await findUserDolls(_id, list);
+    const result = await checkIfDollInTheList(user.myWishlist, dollId);
+    if (!result) {
+      const owner = _id;
+      const doll = dollId;
+      const myDoll = await MyDoll.create({ owner, doll });
+      const user = await User.findByIdAndUpdate(_id, { $push: { myWishlist: [myDoll.id] } }, { new: true });
+      res.json(user);
+    }    
   } catch (error) {
     next(error);
   }

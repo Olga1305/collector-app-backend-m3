@@ -24,7 +24,9 @@ const checkEmailAndPasswordNotEmpty = (req, res, next) => {
 };
 
 
+
 module.exports = {
   checkIfLoggedIn,
-  checkEmailAndPasswordNotEmpty
+  checkEmailAndPasswordNotEmpty,
 };
+
