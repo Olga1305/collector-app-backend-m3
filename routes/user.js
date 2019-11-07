@@ -36,17 +36,26 @@ router.get('/mycollection', checkIfLoggedIn, async (req, res, next) => {
 router.get('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
   const { dollId } = req.params;  
   try {
-    const myDoll = await MyDoll.findById(dollId).populate('doll');
-    
+    const myDoll = await MyDoll.findById(dollId).populate('doll');    
     if (myDoll) {
-
       getDollPhotos(myDoll.doll);
       getEbayQueries(myDoll.doll);
-
       res.json(myDoll);
     } else {
       res.json({}); 
     } 
+  } catch (error) {
+    next(error);
+  }
+});
+
+// DELETE a single doll from user's collection
+router.delete('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
+  const { dollId } = req.params;
+  try {
+    const deletedDoll = await MyDoll.findByIdAndDelete(dollId);
+    console.log(deletedDoll);
+    res.json(deletedDoll);
   } catch (error) {
     next(error);
   }
@@ -65,7 +74,7 @@ router.get('/mywishlist', checkIfLoggedIn, async (req, res, next) => {
 });
 
 // POST add a doll to user's collection
-router.post('/catalog/:brand/:dollId', checkIfLoggedIn, async (req, res, next) => {
+router.post('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
   const { dollId } = req.params;
   const { _id } = req.session.currentUser; 
   const list = 'myCollection';
@@ -85,7 +94,7 @@ router.post('/catalog/:brand/:dollId', checkIfLoggedIn, async (req, res, next) =
 });
 
 // POST add a doll to user's wishlist
-router.post('/catalog/:brand/:dollId', checkIfLoggedIn, async (req, res, next) => {
+router.post('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
   const { dollId } = req.params;
   const { _id } = req.session.currentUser; 
   const list = 'myWishlist';

@@ -12,7 +12,7 @@ Webapp that helps to organize your doll collection.
 
 **Homepage** - As a user I want to be able to access the homepage so that I see what the app is about and login and signup
 
-**Sign up** - As a user I want to sign up on the webpage so that I can see all the events that I could attend
+**Sign up** - As a user I want to sign up on the webpage so that I can see my profile, my collection and my wishlist
 
 **Login** - As a user I want to be able to log in on the webpage so that I can get back to my account
 
@@ -44,6 +44,7 @@ List of other features outside of the MVPs scope:
 - As a user I want to see the doll's current price (from Ebay API) and the difference between release and current prices
 
 **User profile:**
+- As a user I want to sign up and log in with my social profiles (Facebook, Google)
 - As a user I want to see another user profiles, collections, wishlists and selling lists
 - As a user I want to contact to another user 
 
@@ -55,31 +56,6 @@ List of other features outside of the MVPs scope:
 - As a user I want to have alerts about Ebay listing of the dolls from my wishlist at several price
 - As a user I want to have my selling list (public)
 
-
-
-## Routes (MVP) / API endpoints
-
-| Type/Model | Name | Method | Endpoint | Description | Body | Redirects |
-| :---: | :--- | :--- | :--- | :--- | :--- | :--- |
-| Auth | Me | GET | /me | Check session status | - |  |
-| Auth | Sign Up | POST | /signup | Sign up a user | {email, password} | /catalog  | 
-| Auth | Log In | POST | /login | Log in a user | {email, password} | /catalog | 
-| Auth | Log out | GET | /logout | Log out a user | - |  | 
-|  | Home | GET | / | Show home page | - |  | 
-| Doll | Catalog | Get | /catalog | User sees the catalog | - |  | 
-| Doll | Doll Details | GET | /catalog/:dollID | User sees the doll details | - |  | 
-| User | Profile | GET | /profile | User sees his/her profile | - |  | 
-| User | Profile | PUT | /profile | User updates his/her profile | {username} | /profile |
-| MyDoll | My collection | GET | /mycollection | User sees his/her collection | - |  | 
-| MyDoll | Add doll to collection | POST | /mycollection | User adds the doll to his/her collection | {dollID} | /mycollection/:MyDollID |
-| MyDoll | Update doll info | PUT | /mycollection/:MyDollID | User updates his/her doll info | {purchaseDate, purchasePrice, purchaseWay, state, complete} | /mycollection/:MyDollID |
-| MyDoll | Delete from collection | DELETE | /mycollection/:MyDollID | User deletes the doll from collection | - |  | 
-| MyDoll | My wishlist | GET | /mywishlist | User sees his/her wishlist | - |  | 
-| MyDoll | Add doll to collection | POST | /mycollection | User adds the doll to his/her wishlist | {dollID} | /mywishlist/:MyDollID |
-| MyDoll | Update doll info | PUT | /mywishlist/:MyDollID | User updates his/her doll info | {state, complete} | /mywishlist/:MyDollID |
-| MyDoll | Delete from wishlist | DELETE | /mywishlist/:MyDollID | User deletes the doll from wishlist | - |  |  
-
-
 ## Models
 
 **_User Model_**
@@ -89,9 +65,6 @@ List of other features outside of the MVPs scope:
     email: { type: String, required: true, unique: true },
     hashedPassword: { type: String, required: true },
     username: { type: String, unique: true },
-    collection: [{ type: Schema.Types.ObjectID, ref: 'MyDoll' }],
-    wishlist: [{ type: Schema.Types.ObjectID, ref: 'MyDoll' }],
-    tosell: [{ type: Schema.Types.ObjectID, ref: 'MyDoll' }],     // Backlog
 },
 {
     timestamps: true,
@@ -131,7 +104,7 @@ List of other features outside of the MVPs scope:
     body: { type: String },
     skinTone: { type: String },
     hair: { type: String },
-    img: [{ type: String }],
+    images: [{ type: String }],
     collectionName: { type: String },
     distributedBy: { type: String },
     year: { type: Number },
@@ -144,13 +117,40 @@ List of other features outside of the MVPs scope:
   }
 ```
 
+## Routes (MVP) / API endpoints
+
+| Type/Model | Name | Method | Endpoint | Description | Body | Redirects |
+| :---: | :--- | :--- | :--- | :--- | :--- | :--- |
+| Auth | Me | GET | /me | Check session status | - |  |
+| Auth | Sign Up | POST | /signup | Sign up a user | {email, password} | /catalog  | 
+| Auth | Log In | POST | /login | Log in a user | {email, password} | /catalog | 
+| Auth | Log out | GET | /logout | Log out a user | - |  | 
+|  | Home | GET | / | Show home page | - |  | 
+| Doll | Catalog | Get | /catalog | User sees the catalog | - |  | 
+| Doll | Doll Details | GET | /catalog/:dollID | User sees the doll details | - |  | 
+| User | Profile | GET | /profile | User sees his/her profile | - |  | 
+| User | Profile | PUT | /profile | User updates his/her profile | {username} | /profile |
+| MyDoll | My collection | GET | /mycollection | User sees his/her collection | - |  | 
+| MyDoll | Add doll to collection | POST | /mycollection | User adds the doll to his/her collection | {dollID} | /mycollection/:MyDollID |
+| MyDoll | Update doll info | PUT | /mycollection/:MyDollID | User updates his/her doll info | {purchaseDate, purchasePrice, purchaseWay, state, complete} | /mycollection/:MyDollID |
+| MyDoll | Delete from collection | DELETE | /mycollection/:MyDollID | User deletes the doll from collection | - |  | 
+| MyDoll | My wishlist | GET | /mywishlist | User sees his/her wishlist | - |  | 
+| MyDoll | Add doll to collection | POST | /mycollection | User adds the doll to his/her wishlist | {dollID} | /mywishlist/:MyDollID |
+| MyDoll | Update doll info | PUT | /mywishlist/:MyDollID | User updates his/her doll info | {state, complete} | /mywishlist/:MyDollID |
+| MyDoll | Delete from wishlist | DELETE | /mywishlist/:MyDollID | User deletes the doll from wishlist | - |  |  
+
+
+
+
 
 ## Git
 
-[Repository Link](https://github.com/Olga1305/collector-app-backend-m3)
+[Backend Repository Link](https://github.com/Olga1305/collector-app-backend-m3)
+
+[Frontend Repository Link](https://github.com/Olga1305/collector-app-frontend-m3)
 
 [Deploy Link](deploy)
 
 ### Slides
 
-[Slides Link](slides)
+[Slides Link](https://slides.com/olga1305/doll-collector#/)
