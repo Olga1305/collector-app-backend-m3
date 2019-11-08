@@ -71,13 +71,22 @@ router.delete('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) =
   const { dollId } = req.params;
   try {
     const deletedDoll = await MyDoll.findByIdAndDelete(dollId);
-    console.log(deletedDoll);
     res.json(deletedDoll);
   } catch (error) {
     next(error);
   }
 });
 
+// DELETE a single doll from user's wishlist
+router.delete('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
+  const { dollId } = req.params;
+  try {
+    const deletedDoll = await WishlistDoll.findByIdAndDelete(dollId);
+    res.json(deletedDoll);
+  } catch (error) {
+    next(error);
+  }
+});
 
 
 // POST add a doll to user's collection
