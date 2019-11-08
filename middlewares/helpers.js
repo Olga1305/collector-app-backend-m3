@@ -2,19 +2,20 @@
 const User = require('../models/User');
 const Doll = require('../models/Doll');
 const MyDoll = require('../models/MyDoll');
+const WishlistDoll = require('../models/WishlistDoll');
 
-const findUserDolls = async (_id, list) => {
-  const user = await User.findById({ _id }).populate({
-    path: list,
-    populate: { path: 'doll' }
-  });
-  return user;
-};
 
-const checkIfDollInTheList = (list, dollId) => {
+const checkIfDollInTheList = async (_id, dollId, model) => {
   let result;
   let found = 0;
-  list.forEach((el) => {
+  let dolls;
+  if (model === 'MyDoll') {
+    dolls = await MyDoll.find({ owner: _id});
+  }
+  if (model === 'WishlistDoll') {
+    dolls = await WishlistDoll.find({ owner: _id});
+  }
+  dolls.forEach((el) => {
     if (el.doll._id.toString() === dollId.toString()) {
       return found++;
     }
@@ -75,7 +76,6 @@ const getEbayQueries = (doll) => {
 };
 
 module.exports = {
-  findUserDolls,
   checkIfDollInTheList,
   getDollPhotos,
   getEbayQueries,
