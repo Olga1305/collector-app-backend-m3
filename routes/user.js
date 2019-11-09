@@ -66,29 +66,6 @@ router.get('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
   }
 });
 
-// DELETE a single doll from user's collection
-router.delete('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
-  const { dollId } = req.params;
-  try {
-    const deletedDoll = await MyDoll.findByIdAndDelete(dollId);
-    res.json(deletedDoll);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// DELETE a single doll from user's wishlist
-router.delete('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
-  const { dollId } = req.params;
-  try {
-    const deletedDoll = await WishlistDoll.findByIdAndDelete(dollId);
-    res.json(deletedDoll);
-  } catch (error) {
-    next(error);
-  }
-});
-
-
 // POST add a doll to user's collection
 router.post('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
   const { dollId } = req.params;
@@ -120,6 +97,72 @@ router.post('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
       const wishDoll = await WishlistDoll.create({ owner, doll });
       res.json(wishDoll);
     }    
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PUT update doll in user's collection
+router.put('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
+  const { dollId } = req.params;
+  const {
+    purchaseDate,
+    purchasePrice,
+    purchaseWay,
+    condition,
+    kit,
+  } = req.body;
+  
+  try {    
+    const doll = await MyDoll.findByIdAndUpdate(dollId, {
+      purchaseDate,
+      purchasePrice,
+      purchaseWay,
+      condition,
+      kit,
+    });
+    res.json(doll);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PUT update doll in user's wishlist
+router.put('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
+  const { dollId } = req.params;
+  const {
+    condition,
+    kit,
+  } = req.body;
+  
+  try {    
+    const doll = await MyDoll.findByIdAndUpdate(dollId, {
+      condition,
+      kit,
+    });
+    res.json(doll);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// DELETE a single doll from user's collection
+router.delete('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
+  const { dollId } = req.params;
+  try {
+    const deletedDoll = await MyDoll.findByIdAndDelete(dollId);
+    res.json(deletedDoll);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// DELETE a single doll from user's wishlist
+router.delete('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
+  const { dollId } = req.params;
+  try {
+    const deletedDoll = await WishlistDoll.findByIdAndDelete(dollId);
+    res.json(deletedDoll);
   } catch (error) {
     next(error);
   }

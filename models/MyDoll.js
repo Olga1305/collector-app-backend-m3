@@ -9,12 +9,8 @@ const myDollSchema = new Schema(
     purchaseDate: { type: Date },
     purchasePrice: { type: Number },
     purchaseWay: { type: String },
-    state: { type: String, default: 'Perfect' },
-    complete: { type: Boolean, default: true },
-    nudeDoll: { type: Boolean, default: false},
-    headOnly: { type: Boolean, default: false },
-    outfitOnly: { type: Boolean, default: false },
-    partialOutfit: { type: Boolean, default: false },
+    condition: { type: String, default: 'Perfect' },
+    kit: { type: String, default: 'Complete' },
   },
   {
     timestamps: {
