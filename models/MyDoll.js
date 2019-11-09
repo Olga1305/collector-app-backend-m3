@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 const myDollSchema = new Schema(
   {
     owner: { type: Schema.Types.ObjectID, ref: 'User' },
+    favOwner: { type: Schema.Types.ObjectID, ref: 'User' },
     doll: { type: Schema.Types.ObjectID, ref: 'Doll' },
     purchaseDate: { type: Date },
     purchasePrice: { type: Number },
