@@ -1,7 +1,4 @@
 /* eslint-disable no-param-reassign */
-const User = require('../models/User');
-const Doll = require('../models/Doll');
-const MyDoll = require('../models/MyDoll');
 
 const checkIfLoggedIn = (req, res, next) => {
   if (req.session.backTo) delete req.session.backTo;
