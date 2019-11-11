@@ -172,4 +172,30 @@ router.delete(
   }
 );
 
+// GET check if doll is in user's collection
+router.get('/mycollection/:dollId/check', checkIfLoggedIn, async (req, res, next) => {
+  const { _id } = req.session.currentUser;
+  const { dollId } = req.params;
+  const list = 'mycollection';
+  try {
+    const result = await checkIfDollInTheList(_id, dollId, list);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET check if doll is in user's wishlist
+router.get('/mywishlist/:dollId/check', checkIfLoggedIn, async (req, res, next) => {
+  const { _id } = req.session.currentUser;
+  const { dollId } = req.params;
+  const list = 'mywishlist';
+  try {
+    const result = await checkIfDollInTheList(_id, dollId, list);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
