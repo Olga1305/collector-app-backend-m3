@@ -5,7 +5,8 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const cors = require('cors')({ origin: true, credentials: true }); 
+const cors = require('cors')({ origin: true, credentials: true });
+
 require('dotenv').config();
 
 mongoose.set('useCreateIndex', true);
