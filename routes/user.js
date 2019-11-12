@@ -1,4 +1,5 @@
 const express = require('express');
+const User = require('../models/User')
 const MyDoll = require('../models/MyDoll');
 
 const router = express.Router();
@@ -10,6 +11,19 @@ const {
   getEbayQueries,
 } = require('../middlewares/helpers');
 
+// PUT update user's profile
+router.put('/personaldata/update', checkIfLoggedIn, async (req, res, next) => {
+  const { _id } = req.session.currentUser;
+  const { email, username } = req.body;  
+  try {
+    const user = await User.findByIdAndUpdate(_id,        
+      { email, username }
+    );
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // GET user's collection
 router.get('/mycollection', checkIfLoggedIn, async (req, res, next) => {
