@@ -1,11 +1,11 @@
-const creatneError = require('http-errors');
+const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-
+const cors = require('cors')({ origin: true, credentials: true }); 
 require('dotenv').config();
 
 mongoose.set('useCreateIndex', true);
@@ -18,18 +18,14 @@ mongoose
     console.error(error);
   });
 
-const cors = require('cors')({ origin: true, credentials: true }); 
+const authRouter = require('./routes/auth');
+const catalogRouter = require('./routes/catalog');
+const userRouter = require('./routes/user');  
 
 const app = express();
 app.set('trust proxy', true);
 app.use(cors);
 app.options('*', cors);
-
-
-const authRouter = require('./routes/auth');
-const catalogRouter = require('./routes/catalog');
-const userRouter = require('./routes/user');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,7 +43,7 @@ app.use(
     name: 'doll-collector',
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
-      sameSite: 'none', 
+      sameSite: 'none',
       secure: process.env.NODE_ENV === 'production',
     },
   }),
