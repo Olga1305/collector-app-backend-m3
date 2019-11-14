@@ -52,16 +52,16 @@ const getDollPhotos = (doll) => {
 
 const getEbayQueries = (doll) => {
   doll.ebayQueries = [];
-
+  const firstName = doll.character.split(' ', 1);
   const baseQuery = (
     `${ 
-      doll.character 
+      firstName[0] 
     } ${ 
       doll.name}`
   ).toLowerCase();
   const nrfb = `${baseQuery  } nrfb`;
-  const nude = `${baseQuery  } doll nude`;
-  const head = `${baseQuery  } doll head`;
+  const nude = `${baseQuery  } nude`;
+  const head = `${baseQuery  } head`;
   const outfit = `${baseQuery  } outfit`;
 
   doll.ebayQueries.push(baseQuery, nrfb, nude, head, outfit);

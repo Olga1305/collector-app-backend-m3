@@ -115,8 +115,11 @@ router.get('/:brand/:dollId', async (req, res, next) => {
     if (doll) {
       getDollPhotos(doll);
       getEbayQueries(doll);
-      const ebay = await findByKeywords(doll.ebayQueries[1]);
-      doll.ebay.push(ebay);
+      const ebayNrfb = await findByKeywords(doll.ebayQueries[1]);
+      const ebayNude = await findByKeywords(doll.ebayQueries[2]);
+      const ebayHead = await findByKeywords(doll.ebayQueries[3]);
+      const ebayOutfit = await findByKeywords(doll.ebayQueries[4]);
+      doll.ebay.push(ebayNrfb, ebayNude, ebayHead, ebayOutfit);
       res.json(doll);
     } else {
       res.json({});
