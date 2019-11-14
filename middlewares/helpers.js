@@ -54,18 +54,15 @@ const getEbayQueries = (doll) => {
   doll.ebayQueries = [];
 
   const baseQuery = (
-    `${doll.subBrand 
+    `${ 
+      doll.character 
     } ${ 
-    doll.character 
-    } ${ 
-    doll.name}`
+      doll.name}`
   ).toLowerCase();
   const nrfb = `${baseQuery  } nrfb`;
   const nude = `${baseQuery  } doll nude`;
   const head = `${baseQuery  } doll head`;
   const outfit = `${baseQuery  } outfit`;
-
-  // const subBrand = encodeURI(doll.subBrand);
 
   doll.ebayQueries.push(baseQuery, nrfb, nude, head, outfit);
 

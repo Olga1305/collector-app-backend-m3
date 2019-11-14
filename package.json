@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "debug": "^2.6.9",
     "dotenv": "^8.2.0",
+    "ebay-node-api": "^2.7.2",
     "express": "~4.16.0",
     "express-session": "^1.17.0",
     "http-errors": "~1.6.2",

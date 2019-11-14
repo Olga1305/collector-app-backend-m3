@@ -4,6 +4,7 @@ const Doll = require('../models/Doll');
 const router = express.Router();
 
 const { getDollPhotos, getEbayQueries } = require('../middlewares/helpers');
+const { findByKeywords } = require('../middlewares/ebayApi');
 
 // GET all dolls listing
 router.get('/', async (req, res, next) => {
@@ -36,7 +37,7 @@ router.get('/:brand', async (req, res, next) => {
     const collections = [];
 
     dolls.forEach((doll) => {
-      if (doll.year !== '') {
+      if (doll.year !== "") {
         allYears.push(doll.year);
       } else {
         return allYears;
@@ -111,12 +112,11 @@ router.get('/:brand/:dollId', async (req, res, next) => {
   const { dollId } = req.params;
   try {
     const doll = await Doll.findById(dollId);
-
     if (doll) {
-
       getDollPhotos(doll);
       getEbayQueries(doll);
-      
+      const ebay = await findByKeywords(doll.ebayQueries[1]);
+      doll.ebay.push(ebay);
       res.json(doll);
     } else {
       res.json({});
