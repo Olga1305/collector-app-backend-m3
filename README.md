@@ -2,7 +2,7 @@
 
 ## Description
 
-Webapp that helps to organize your doll collection.
+Webapp that helps to organize your fashion dolls collection.
 
 ## User Stories / MVP
 
@@ -77,16 +77,13 @@ List of other features outside of the MVPs scope:
 ```javascript
 {
     owner: { type: Schema.Types.ObjectID, ref: 'User' },
+    favOwner: { type: Schema.Types.ObjectID, ref: 'User' },
     doll: { type: Schema.Types.ObjectID, ref: 'Doll' },
     purchaseDate: { type: Date },
     purchasePrice: { type: Number },
     purchaseWay: { type: String },
-    state: { type: String, default: 'Perfect' },
-    complete: { type: Boolean, default: true },
-    nudeDoll: { type: Boolean, default: false},
-    headOnly: { type: Boolean, default: false },
-    outfitOnly: { type: Boolean, default: false },
-    partialOutfit: { type: Boolean, default: false },
+    condition: { type: String, default: 'Perfect' },
+    kit: { type: String, default: 'Complete' },
   },
   {
     timestamps: true,
@@ -110,7 +107,7 @@ List of other features outside of the MVPs scope:
     year: { type: Number },
     editionSize: { type: Number },
     releasePrice: { type: Number },
-    currentPrice: { type: Number },   // Backlog, depends on Ebay API
+    ebayQueries: [{ type: String }],   // Backlog, depends on Ebay API
   },
   {
     timestamps: true,
@@ -126,20 +123,18 @@ List of other features outside of the MVPs scope:
 | Auth | Log In | POST | /login | Log in a user | {email, password} | /catalog | 
 | Auth | Log out | GET | /logout | Log out a user | - |  | 
 |  | Home | GET | / | Show home page | - |  | 
-| Doll | Catalog | Get | /catalog | User sees the catalog | - |  | 
+| Doll | Catalog | GET | /catalog | User sees the catalog | - |  | 
 | Doll | Doll Details | GET | /catalog/:dollID | User sees the doll details | - |  | 
 | User | Profile | GET | /profile | User sees his/her profile | - |  | 
-| User | Profile | PUT | /profile | User updates his/her profile | {username} | /profile |
+| User | Profile | PUT | /profile | User updates his/her profile | {username, email} | /profile |
 | MyDoll | My collection | GET | /mycollection | User sees his/her collection | - |  | 
 | MyDoll | Add doll to collection | POST | /mycollection | User adds the doll to his/her collection | {dollID} | /mycollection/:MyDollID |
-| MyDoll | Update doll info | PUT | /mycollection/:MyDollID | User updates his/her doll info | {purchaseDate, purchasePrice, purchaseWay, state, complete} | /mycollection/:MyDollID |
+| MyDoll | Update doll info | PUT | /mycollection/:MyDollID | User updates his/her doll info | {purchaseDate, purchasePrice, purchaseWay, condition, kit} | /mycollection/:MyDollID |
 | MyDoll | Delete from collection | DELETE | /mycollection/:MyDollID | User deletes the doll from collection | - |  | 
 | MyDoll | My wishlist | GET | /mywishlist | User sees his/her wishlist | - |  | 
 | MyDoll | Add doll to collection | POST | /mycollection | User adds the doll to his/her wishlist | {dollID} | /mywishlist/:MyDollID |
-| MyDoll | Update doll info | PUT | /mywishlist/:MyDollID | User updates his/her doll info | {state, complete} | /mywishlist/:MyDollID |
+| MyDoll | Update doll info | PUT | /mywishlist/:MyDollID | User updates his/her doll info | {condition, kit} | /mywishlist/:MyDollID |
 | MyDoll | Delete from wishlist | DELETE | /mywishlist/:MyDollID | User deletes the doll from wishlist | - |  |  
-
-
 
 
 
@@ -149,7 +144,7 @@ List of other features outside of the MVPs scope:
 
 [Frontend Repository Link](https://github.com/Olga1305/collector-app-frontend-m3)
 
-[Deploy Link](deploy)
+[Deploy Link](https://doll-collector.netlify.com/)
 
 ### Slides
 
