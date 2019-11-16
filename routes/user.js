@@ -10,6 +10,7 @@ const {
   getDollPhotos,
   getEbayQueries,
 } = require('../middlewares/helpers');
+const { findByKeywords } = require('../middlewares/ebayApi');
 
 // PUT update user's profile
 router.put('/personaldata/update', checkIfLoggedIn, async (req, res, next) => {
@@ -55,6 +56,11 @@ router.get('/mycollection/:dollId', checkIfLoggedIn, isValidID('dollId'), async 
     if (myDoll) {
       getDollPhotos(myDoll.doll);
       getEbayQueries(myDoll.doll);
+      const ebayNrfb = await findByKeywords(myDoll.doll.ebayQueries[1]);
+      const ebayNude = await findByKeywords(myDoll.doll.ebayQueries[2]);
+      const ebayHead = await findByKeywords(myDoll.doll.ebayQueries[3]);
+      const ebayOutfit = await findByKeywords(myDoll.doll.ebayQueries[4]);
+      myDoll.doll.ebay.push(ebayNrfb, ebayNude, ebayHead, ebayOutfit);
       res.json(myDoll);
     } else {
       res.json({});

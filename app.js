@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -21,7 +20,7 @@ mongoose
 
 const authRouter = require('./routes/auth');
 const catalogRouter = require('./routes/catalog');
-const userRouter = require('./routes/user');  
+const userRouter = require('./routes/user');
 
 const app = express();
 app.set('trust proxy', true);
