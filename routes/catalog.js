@@ -3,6 +3,7 @@ const Doll = require('../models/Doll');
 
 const router = express.Router();
 
+const { isValidID } = require('../middlewares');
 const { getDollPhotos, getEbayQueries } = require('../middlewares/helpers');
 const { findByKeywords } = require('../middlewares/ebayApi');
 
@@ -108,7 +109,7 @@ router.get('/:brand', async (req, res, next) => {
 });
 
 // GET doll details
-router.get('/:brand/:dollId', async (req, res, next) => {
+router.get('/:brand/:dollId', isValidID('dollId'), async (req, res, next) => {
   const { dollId } = req.params;
   try {
     const doll = await Doll.findById(dollId);

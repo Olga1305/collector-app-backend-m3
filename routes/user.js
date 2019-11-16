@@ -4,7 +4,7 @@ const MyDoll = require('../models/MyDoll');
 
 const router = express.Router();
 
-const { checkIfLoggedIn } = require('../middlewares');
+const { isValidID, checkIfLoggedIn } = require('../middlewares');
 const {
   checkIfDollInTheList,
   getDollPhotos,
@@ -48,7 +48,7 @@ router.get('/mywishlist', checkIfLoggedIn, async (req, res, next) => {
 });
 
 // GET a single doll from user's collection
-router.get('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
+router.get('/mycollection/:dollId', checkIfLoggedIn, isValidID('dollId'), async (req, res, next) => {
   const { dollId } = req.params;
   try {
     const myDoll = await MyDoll.findById(dollId).populate('doll');
@@ -65,7 +65,7 @@ router.get('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
 });
 
 // GET a single doll from user's wishlist
-router.get('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
+router.get('/mywishlist/:dollId', checkIfLoggedIn, isValidID('dollId'), async (req, res, next) => {
   const { dollId } = req.params;
   try {
     const myDoll = await MyDoll.findById(dollId).populate('doll');
@@ -85,6 +85,7 @@ router.get('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
 router.post(
   '/mycollection/:dollId',
   checkIfLoggedIn,
+  isValidID('dollId'),
   async (req, res, next) => {
     const { dollId } = req.params;
     const { _id } = req.session.currentUser;
@@ -104,7 +105,7 @@ router.post(
 );
 
 // POST add a doll to user's wishlist
-router.post('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
+router.post('/mywishlist/:dollId', checkIfLoggedIn, isValidID('dollId'), async (req, res, next) => {
   const { dollId } = req.params;
   const { _id } = req.session.currentUser;
   const list = 'mywishlist';
@@ -122,7 +123,7 @@ router.post('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
 });
 
 // PUT update doll in user's collection
-router.put('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
+router.put('/mycollection/:dollId', checkIfLoggedIn, isValidID('dollId'), async (req, res, next) => {
   const { dollId } = req.params;
   const { purchaseDate, purchasePrice, purchaseWay, condition, kit } = req.body;
 
@@ -141,7 +142,7 @@ router.put('/mycollection/:dollId', checkIfLoggedIn, async (req, res, next) => {
 });
 
 // PUT update doll in user's wishlist
-router.put('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
+router.put('/mywishlist/:dollId', checkIfLoggedIn, isValidID('dollId'), async (req, res, next) => {
   const { dollId } = req.params;
   const { condition, kit } = req.body;
 
@@ -160,6 +161,7 @@ router.put('/mywishlist/:dollId', checkIfLoggedIn, async (req, res, next) => {
 router.delete(
   '/mycollection/:dollId',
   checkIfLoggedIn,
+  isValidID('dollId'),
   async (req, res, next) => {
     const { dollId } = req.params;
     try {
@@ -175,6 +177,7 @@ router.delete(
 router.delete(
   '/mywishlist/:dollId',
   checkIfLoggedIn,
+  isValidID('dollId'),
   async (req, res, next) => {
     const { dollId } = req.params;
     try {
@@ -187,7 +190,7 @@ router.delete(
 );
 
 // GET check if doll is in user's collection
-router.get('/mycollection/:dollId/check', checkIfLoggedIn, async (req, res, next) => {
+router.get('/mycollection/:dollId/check', checkIfLoggedIn, isValidID('dollId'), async (req, res, next) => {
   const { _id } = req.session.currentUser;
   const { dollId } = req.params;
   const list = 'mycollection';
@@ -200,7 +203,7 @@ router.get('/mycollection/:dollId/check', checkIfLoggedIn, async (req, res, next
 });
 
 // GET check if doll is in user's wishlist
-router.get('/mywishlist/:dollId/check', checkIfLoggedIn, async (req, res, next) => {
+router.get('/mywishlist/:dollId/check', checkIfLoggedIn, isValidID('dollId'), async (req, res, next) => {
   const { _id } = req.session.currentUser;
   const { dollId } = req.params;
   const list = 'mywishlist';

@@ -1,5 +1,10 @@
 /* eslint-disable no-param-reassign */
 
+const isValidID = id => (req, res, next) => {
+  if (req.params[id].match(/^[0-9a-fA-F]{24}$/)) next();
+  else res.status(404).json({ code: 'not found' });
+};
+
 const checkIfLoggedIn = (req, res, next) => {
   if (req.session.backTo) delete req.session.backTo;
   if (req.session.currentUser) {
@@ -20,9 +25,8 @@ const checkEmailAndPasswordNotEmpty = (req, res, next) => {
   }
 };
 
-
-
 module.exports = {
+  isValidID,
   checkIfLoggedIn,
   checkEmailAndPasswordNotEmpty,
 };
