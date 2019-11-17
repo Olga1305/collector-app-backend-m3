@@ -78,6 +78,11 @@ router.get('/mywishlist/:dollId', checkIfLoggedIn, isValidID('dollId'), async (r
     if (myDoll) {
       getDollPhotos(myDoll.doll);
       getEbayQueries(myDoll.doll);
+      const ebayNrfb = await findByKeywords(myDoll.doll.ebayQueries[1]);
+      const ebayNude = await findByKeywords(myDoll.doll.ebayQueries[2]);
+      const ebayHead = await findByKeywords(myDoll.doll.ebayQueries[3]);
+      const ebayOutfit = await findByKeywords(myDoll.doll.ebayQueries[4]);
+      myDoll.doll.ebay.push(ebayNrfb, ebayNude, ebayHead, ebayOutfit);
       res.json(myDoll);
     } else {
       res.json({});
