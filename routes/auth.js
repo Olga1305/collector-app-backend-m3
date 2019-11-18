@@ -18,17 +18,20 @@ router.get('/me', (req, res, next) => {
 });
 
 router.post('/signup', checkEmailAndPasswordNotEmpty, async (req, res, next) => {
-  const { email, password } = res.locals.auth;
+  const { username, email, password } = res.locals.auth;
   try {
-    const user = await User.findOne({ email });
-    if (user) {
+    const user1 = await User.findOne({ username });
+    if (user1) {
       return res.status(422).json({ code: 'username-not-unique' });
     }
-
+    const user2 = await User.findOne({ email });
+    if (user2) {
+      return res.status(422).json({ code: 'email-not-unique' });
+    }
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashedPassword = bcrypt.hashSync(password, salt);
 
-    const newUser = await User.create({ email, hashedPassword });
+    const newUser = await User.create({ username, email, hashedPassword });
     req.session.currentUser = newUser;
     return res.json(newUser);
   } catch (error) {

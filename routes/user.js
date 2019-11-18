@@ -4,12 +4,14 @@ const MyDoll = require("../models/MyDoll");
 
 const router = express.Router();
 
-const { isValidID, checkIfLoggedIn } = require("../middlewares");
+const {
+  isValidID,
+  checkIfLoggedIn,
+} = require("../middlewares");
 const {
   checkIfDollInTheList,
   getDollPhotos,
   getEbayQueries,
-  getNrfbQuery
 } = require("../middlewares/helpers");
 const { findByKeywords } = require("../middlewares/ebayApi");
 
@@ -18,7 +20,20 @@ router.put("/personaldata/update", checkIfLoggedIn, async (req, res, next) => {
   const { _id } = req.session.currentUser;
   const { email, username } = req.body;
   try {
-    const user = await User.findByIdAndUpdate(_id, { email, username });
+    const user1 = await User.findOne({ email });
+    if (user1 && user1._id.toString() !== req.session.currentUser._id.toString()) {
+      return res.status(422).json({ code: "email-not-unique" });
+    }
+    const user2 = await User.findOne({ username });
+    if (user2 && user2._id.toString() !== req.session.currentUser._id.toString()) {
+      return res.status(422).json({ code: "username-not-unique" });
+    }
+    const user = await User.findByIdAndUpdate(
+      _id,
+      { email, username },
+      { new: true }
+    );
+    req.session.currentUser = user;
     res.json(user);
   } catch (error) {
     next(error);
