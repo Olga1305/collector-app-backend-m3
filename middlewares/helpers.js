@@ -69,8 +69,21 @@ const getEbayQueries = (doll) => {
   return doll;
 };
 
+const getNrfbQuery = (doll) => {
+  const firstName = doll.character.split(' ', 1);
+  const query = (
+    `${ 
+      firstName[0] 
+    } ${ 
+      doll.name} nrfb`
+  ).toLowerCase();
+  doll.ebayQueries.push(query);
+  return doll;
+}
+
 module.exports = {
   checkIfDollInTheList,
   getDollPhotos,
   getEbayQueries,
+  getNrfbQuery,
 };
