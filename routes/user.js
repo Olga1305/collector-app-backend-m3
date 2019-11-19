@@ -282,45 +282,4 @@ router.get(
   }
 );
 
-// // POST get dolls by query
-// router.post('/searchresults', async (req, res, next) => {
-//   const { query } = req.body;
-//   try {
-//     if (query !== '') {
-//       const allDolls = await Doll.find();
-//       const dolls = allDolls.filter((item) => {
-//         return (
-//           item.name.toLowerCase().includes(query.toLowerCase()) ||
-//           item.character.toLowerCase().includes(query.toLowerCase()) ||
-//           item.mold.toLowerCase().includes(query.toLowerCase()) ||
-//           item.skinTone.toLowerCase().includes(query.toLowerCase()) ||
-//           item.body.toLowerCase().includes(query.toLowerCase()) ||
-//           item.hair.toLowerCase().includes(query.toLowerCase()) ||
-//           item.subBrand.toLowerCase().includes(query.toLowerCase()) ||
-//           item.collectionName.toLowerCase().includes(query.toLowerCase())
-//         );
-//       });
-//       res.json(dolls);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
-// // POST get dolls by mold
-// router.get('/searchresults/mold/:query', async (req, res, next) => {
-//   const { query } = req.params;
-//   console.log(query)
-//   try {
-//     if (query !== '') {
-//       const dolls = await Doll.find({ mold: query });    
-//       console.log(dolls)
-//       res.json(dolls);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
-
 module.exports = router;

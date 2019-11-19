@@ -56,6 +56,21 @@ router.post('/login', checkEmailAndPasswordNotEmpty, async (req, res, next) => {
   }
 });
 
+router.post('/sociallogin', async (req, res, next) => {
+  const { email } = res.locals.auth;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ code: 'not-found' });
+    }    
+    req.session.currentUser = user;
+    return res.json(user);    
+
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/logout', (req, res, next) => {
   req.session.destroy((err) => {
     if (err) {
