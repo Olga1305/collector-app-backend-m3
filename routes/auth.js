@@ -56,9 +56,9 @@ router.post('/login', checkEmailAndPasswordNotEmpty, async (req, res, next) => {
   }
 });
 
-router.post('/sociallogin', async (req, res, next) => {
-  const { email } = res.locals.auth;
-  try {
+router.post('/sociallogin/:email', async (req, res, next) => {  
+  const { email } = req.params;
+    try {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ code: 'not-found' });
